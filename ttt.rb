@@ -5,6 +5,8 @@ Bundler.require(:default, :development)
 
 module TicTacToe
   class Game
+    C_WIDTH = IO.console.winsize.last
+
     def initialize(board, player1, player2)
       @board = board
       @player1 = player1
@@ -14,16 +16,25 @@ module TicTacToe
     def run
       Game.draw(Messages.head, chomp: true)
       Game.draw('Choose your destiny!')
+      Game.ask(@player1, 'Choose your name: ', :name=)
+      Game.ask(@player1, "Player: #{@player1.name}, choose your letter: ", :letter=)
+      Game.ask(@player2, 'Choose your name: ', :name=)
+      Game.ask(@player2, "Player: #{@player2.name}, choose your letter: ", :letter=)
       Game.draw(@player1.to_s)
       Game.draw(@player2.to_s)
       Game.draw(@board.table)
     end
 
     def self.draw(message, chomp: false)
-      width = IO.console.winsize.last
       message.each_line(chomp: chomp) do |line|
-        puts line.center(width)
+        puts line.center(C_WIDTH)
       end
+      puts
+    end
+
+    def self.ask(player, question, method)
+      print question.rjust(C_WIDTH / 2 + question.length / 2)
+      player.send(method, gets.strip)
       puts
     end
   end
@@ -57,10 +68,19 @@ module TicTacToe
 
     attr_reader :name, :letter
 
+    def name=(new_name)
+      @name = new_name.capitalize unless new_name.empty?
+    end
+
+    def letter=(new_letter)
+      letters = Player.letters
+      new_letter.upcase!
+      @letter = letters.include?(new_letter) ? letters.delete(new_letter) : letters.pop
+    end
+
     def initialize
       Player.count += 1
       @name = Player.count
-      @letter = Player.letters.pop
     end
 
     def to_s
@@ -93,10 +113,12 @@ game1.run
 # Notes:
 #
 # * Entities:
-#   Game, Board, Player, Messages?.
+#   Game, Board, Player, Messages?
 #
 # * Game:
-#   Includes Board, Player.
+#   Includes Board, Player 1, Player 2.
+#   Can ask Player for input.
+#   Can draw table.
 #
 # * Board:
 #   Can have adjustable size.
@@ -105,3 +127,4 @@ game1.run
 # * Player:
 #   Can have name.
 #   Can have 'X' or 'O'.
+#   Can make moves?
