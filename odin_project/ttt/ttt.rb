@@ -40,19 +40,16 @@ module TicTacToe
   end
 
   class Board
-    def self.init(rows = 3, columns = 3)
-      self.new(rows, columns)
-    end
+    attr_reader :table, :positions
 
-    def initialize(rows, columns)
+    def initialize(rows = 3, columns = 3)
       @table = Array.new(rows) { Array.new(columns) {  '.' } }
+      @positions = Array.new(rows * columns) { |i| i + 1 }.each_slice(columns)
+      @table.extend Helper
+      @positions.extend Helper
     end
 
-    def table
-      @table.map { |row| row.join('   |   ') }.join("\n")
-    end
-
-    def set_column(row, column, value)
+    def set(row, column, value)
       @table[row][column] = value
     end
   end
@@ -101,10 +98,15 @@ module TicTacToe
       FRAME
     end
   end
+
+  module Helper
+    def to_s
+      self.map { |row| row.join('   |   ') }.join("\n")
+    end
+  end
 end
 
-board = TicTacToe::Board.init
-board.set_column(0, 0, 'X')
+board = TicTacToe::Board.new
 p1 = TicTacToe::Player.new
 p2 = TicTacToe::Player.new
 game1 = TicTacToe::Game.new(board, p1, p2)
