@@ -161,9 +161,15 @@ game1.run
 #
 # * Board:
 #   Can have adjustable size.
-#   Can set columns with input.
+#   Can set columns with Player's input.
 
 # * Player:
 #   Can have name.
 #   Can have 'X' or 'O'.
 #   Can make moves?
+#
+# * TODO:
+#   [X] Make possible to choose from range 1-9 instead of row and col nums.
+#   [?] Board.set_column (Game.ask player, ...) or Player.make_move?
+#   [?] Setup board interactivelly?
+#   [ ] Set inner class methods to be private.
