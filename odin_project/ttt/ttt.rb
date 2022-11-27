@@ -80,6 +80,17 @@ module TicTacToe
       @name = Player.count
     end
 
+    def make_move(table, player_index)
+      current_index = 0
+      player_index = player_index.to_i
+      table.each_with_index do |row, ri|
+        row.each_with_index do |_column, ci|
+          current_index += 1
+          return [ri, ci] if current_index == player_index
+        end
+      end
+    end
+
     def to_s
       "Player: #{@name}, you are: '#{@letter}'"
     end
