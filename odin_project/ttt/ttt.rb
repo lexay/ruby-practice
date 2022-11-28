@@ -5,18 +5,20 @@ Bundler.require(:default, :development)
 
 module TicTacToe
   class Game
-    C_WIDTH = IO.console.winsize.last
-
     def self.draw(message, chomp: false)
       message.to_s.each_line(chomp: chomp) do |line|
-        puts line.center(C_WIDTH)
+        console_width = IO.console.winsize.last
+        offset = (console_width + line.length) / 2
+        print line.rjust(offset)
       end
-      puts
+      return if chomp
+
+      2.times { puts }
     end
 
     def self.ask(player, *args)
       question = args.shift
-      print question.rjust(C_WIDTH / 2 + question.length / 2)
+      Game.draw(question, chomp: true)
       player.send(*args, gets.strip)
     end
 
@@ -27,7 +29,7 @@ module TicTacToe
     end
 
     def run
-      Game.draw(Messages.head, chomp: true)
+      Game.draw(Messages.head)
       Game.draw('Choose your destiny!')
       setup_players
       show_grid
@@ -138,7 +140,7 @@ module TicTacToe
 
   module Helper
     def to_s
-      self.map { |row| row.join('   |   ') }.join("\n")
+      "\n" << self.map { |row| row.join('   |   ') }.join("\n\n")
     end
   end
 end
@@ -172,4 +174,4 @@ game1.run
 #   [X] Make possible to choose from range 1-9 instead of row and col nums.
 #   [?] Board.set_column (Game.ask player, ...) or Player.make_move?
 #   [?] Setup board interactivelly?
-#   [ ] Set inner class methods to be private.
+#   [?] Set inner class methods to be private?
