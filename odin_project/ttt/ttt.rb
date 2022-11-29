@@ -5,7 +5,7 @@ Bundler.require(:default, :development)
 
 module TicTacToe
   class Game
-    def self.draw(message, chomp: false)
+    def self.show(message, chomp: false)
       message.to_s.each_line(chomp: chomp) do |line|
         console_width = IO.console.winsize.last
         offset = (console_width + line.length) / 2
@@ -18,7 +18,7 @@ module TicTacToe
 
     def self.ask(player, *args)
       question = args.shift
-      Game.draw(question, chomp: true)
+      Game.show(question, chomp: true)
       player.send(*args, gets.strip)
     end
 
@@ -29,9 +29,9 @@ module TicTacToe
     end
 
     def run
-      Game.draw(Messages.head)
-      Game.draw('Choose your destiny!')
-      setup_players
+      Game.show(Messages.head)
+      Game.show('Choose your destiny!')
+      ready_players
       show_grid
       loop do
         take_turns
@@ -45,24 +45,41 @@ module TicTacToe
     end
 
     def show_grid
-      Game.draw('Default grid:')
-      Game.draw(@board.positions)
+      Game.show('Default grid:')
+      Game.show(@board.positions)
     end
 
-    def setup_players
+    def ready_players
       players.each do |player|
         Game.ask(player, 'Choose your name: ', :name=)
-        Game.ask(player, "Player: #{player.name}, choose your letter: ", :letter=)
-        Game.draw(player)
+        if player == @player1
+          Game.ask(player, "Player: #{player.name}, choose your sign: ", :sign=)
+        else
+          player.sign = Player.signs.last
+        end
+        Game.show(player)
       end
     end
 
-    def take_turns
+    def rotate_players
       players.each do |player|
-        Game.draw("Player: #{player.name}, your turn!")
-        row, column = Game.ask(player, 'Enter position number(1-9): ', :make_move, @board.table)
-        @board.set(row, column, player.letter)
-        Game.draw(@board.table)
+        Game.show("Player: #{player.name}, your turn!")
+        prompt(player)
+        Game.show(@board.table)
+        check_result(player)
+      end
+    end
+
+    def prompt(player)
+      loop do
+        position = Game.ask(player, 'Enter position number(1-9): ', :make_move, @board.table)
+        if position.nil?
+          Game.show 'Invalid input!'; redo
+        elsif !@board.empty?(*position)
+          Game.show("Player: #{player.name}, position is occupied! Choose another one!"); redo
+        else
+          @board.set(*position, player.sign); break
+        end
       end
     end
   end
@@ -80,27 +97,31 @@ module TicTacToe
     def set(row, column, value)
       @table[row][column] = value
     end
+
+    def empty?(row, column)
+      @table[row][column] == '.'
+    end
   end
 
   class Player
     @count = 0
-    @letters = %w[X O].shuffle
+    @signs = %w[X O].shuffle
 
     class << self
       attr_accessor :count
-      attr_reader :letters
+      attr_reader :signs
     end
 
-    attr_reader :name, :letter
+    attr_reader :name, :sign
 
     def name=(new_name)
       @name = new_name.capitalize unless new_name.empty?
     end
 
-    def letter=(new_letter)
-      letters = Player.letters
-      new_letter.upcase!
-      @letter = letters.include?(new_letter) ? letters.delete(new_letter) : letters.pop
+    def sign=(new_sign)
+      signs = Player.signs
+      new_sign.upcase!
+      @sign = signs.include?(new_sign) ? signs.delete(new_sign) : signs.pop
     end
 
     def initialize
@@ -120,7 +141,7 @@ module TicTacToe
     end
 
     def to_s
-      "Player: #{@name}, you are: '#{@letter}'"
+      "Player: #{@name}, you sign is: '#{@sign}'"
     end
   end
 
@@ -159,7 +180,7 @@ game1.run
 # * Game:
 #   Includes Board, Player 1, Player 2.
 #   Can ask Player for input.
-#   Can draw table.
+#   Can show table.
 #
 # * Board:
 #   Can have adjustable size.
@@ -175,3 +196,4 @@ game1.run
 #   [?] Board.set_column (Game.ask player, ...) or Player.make_move?
 #   [?] Setup board interactivelly?
 #   [?] Set inner class methods to be private?
+#   [?] Prompt for another game in loop?
