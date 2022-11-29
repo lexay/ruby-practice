@@ -33,9 +33,7 @@ module TicTacToe
       Game.show('Choose your destiny!')
       ready_players
       show_grid
-      loop do
-        take_turns
-      end
+      loop { rotate_players }
     end
 
     private
@@ -81,6 +79,26 @@ module TicTacToe
           @board.set(*position, player.sign); break
         end
       end
+    end
+
+    def check_result(player)
+      case check_combinations
+      when 'win'
+        Game.show "Player: #{player.name} wins!"; exit
+      when 'draw'
+        Game.show 'Draw!'; exit
+      end
+    end
+
+    def check_combinations
+      table = @board.table
+      horizontal = table
+      vertical = table.transpose
+      diagonal_left = [table.map.with_index { |row, i| row[i] }]
+      diagonal_right = [table.reverse.map.with_index { |row, i| row[i] }]
+      combinations = [horizontal, vertical, diagonal_left, diagonal_right]
+      return 'win' if combinations.any? { |combination| combination.any? { |elements| elements.all?('X') || elements.all?('O') } }
+      return 'draw' if combinations.all? { |combination| combination.all? { |elements| elements.none?('.') } }
     end
   end
 
@@ -132,6 +150,8 @@ module TicTacToe
     def make_move(table, player_index)
       current_index = 0
       player_index = player_index.to_i
+      return nil unless player_index.between?(1, table.flatten.size)
+
       table.each_with_index do |row, ri|
         row.each_with_index do |_column, ci|
           current_index += 1
