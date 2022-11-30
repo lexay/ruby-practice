@@ -29,7 +29,7 @@ module TicTacToe
     end
 
     def run
-      Game.show(Messages.head)
+      Game.show(Messages.welcome)
       Game.show('Choose your destiny!')
       ready_players
       show_grid
@@ -43,7 +43,7 @@ module TicTacToe
     end
 
     def show_grid
-      Game.show('Default grid:')
+      Game.show('Positions:')
       Game.show(@board.positions)
     end
 
@@ -164,13 +164,26 @@ module TicTacToe
   end
 
   class Messages
-    def self.head
+    def self.welcome
       <<~FRAME
         ########################
         |                      |
-        |        Welcome!      |
+        |       Welcome!       |
         +                      +
         |  Lets play some TTT  |
+        |                      |
+        ########################
+      FRAME
+    end
+
+    def self.bye
+      <<~FRAME
+
+        ########################
+        |                      |
+        |       Goodbye!       |
+        +                      +
+        |    See you later!    |
         |                      |
         ########################
       FRAME
@@ -179,8 +192,14 @@ module TicTacToe
 
   module Helper
     def to_s
-      "\n" << self.map { |row| row.join('   |   ') }.join("\n\n")
+      table = self.map { |row| row.join('   |   ') }.join("\n\n")
+      "\n" << table << "\n"
     end
+  end
+
+  Signal.trap('INT') do
+    Game.show(Messages.bye)
+    exit
   end
 end
 
@@ -215,4 +234,4 @@ game1.run
 #   [?] Set inner class methods to be private?
 #   [ ] Prompt for another game in loop?
 #   [?] Setup board interactivelly?
-#   [ ] Exit gracefully when interrupted.
+#   [X] Exit gracefully when interrupted.
