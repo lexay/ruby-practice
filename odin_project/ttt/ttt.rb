@@ -96,9 +96,9 @@ module TicTacToe
       vertical = table.transpose
       diagonal_left = [table.map.with_index { |row, i| row[i] }]
       diagonal_right = [table.reverse.map.with_index { |row, i| row[i] }]
-      combinations = [horizontal, vertical, diagonal_left, diagonal_right]
-      return 'win' if combinations.any? { |combination| combination.any? { |elements| elements.all?('X') || elements.all?('O') } }
-      return 'draw' if combinations.all? { |combination| combination.all? { |elements| elements.none?('.') } }
+      combinations = [horizontal, vertical, diagonal_left, diagonal_right].flatten(1)
+      return 'win' if combinations.any? { |c| c.all?('X') || c.all?('O') }
+      return 'draw' if combinations.all? { |c| c.none?('.') }
     end
   end
 
