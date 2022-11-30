@@ -8,8 +8,8 @@ module TicTacToe
     def self.show(message, chomp: false)
       message.to_s.each_line(chomp: chomp) do |line|
         console_width = IO.console.winsize.last
-        offset = (console_width + line.length) / 2
-        print line.rjust(offset)
+        offset = (console_width + line.length) / 2.0
+        print line.rjust(offset.round)
       end
       return if chomp
 
