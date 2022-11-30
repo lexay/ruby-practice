@@ -33,7 +33,7 @@ module TicTacToe
       Game.show('Choose your destiny!')
       ready_players
       show_grid
-      loop { rotate_players }
+      rotate_players
     end
 
     private
@@ -60,11 +60,18 @@ module TicTacToe
     end
 
     def rotate_players
-      players.each do |player|
-        Game.show("Player: #{player.name}, your turn!")
-        prompt(player)
-        Game.show(@board.table)
-        check_result(player)
+      loop do
+        players.each do |player|
+          Game.show("Player: #{player.name}, your turn!")
+          prompt(player)
+          Game.show(@board.table)
+          case check_combinations
+          when 'win'
+            return Game.show("Player: #{player.name} wins!")
+          when 'draw'
+            return Game.show('Draw!')
+          end
+        end
       end
     end
 
@@ -78,15 +85,6 @@ module TicTacToe
         else
           @board.set(*position, player.sign); break
         end
-      end
-    end
-
-    def check_result(player)
-      case check_combinations
-      when 'win'
-        Game.show "Player: #{player.name} wins!"; exit
-      when 'draw'
-        Game.show 'Draw!'; exit
       end
     end
 
@@ -150,7 +148,7 @@ module TicTacToe
     def make_move(table, player_index)
       current_index = 0
       player_index = player_index.to_i
-      return nil unless player_index.between?(1, table.flatten.size)
+      return unless player_index.between?(1, table.flatten.size)
 
       table.each_with_index do |row, ri|
         row.each_with_index do |_column, ci|
@@ -191,7 +189,7 @@ p1 = TicTacToe::Player.new
 p2 = TicTacToe::Player.new
 game1 = TicTacToe::Game.new(board, p1, p2)
 game1.run
-
+# loop { TicTacToe::Game.new(board, p1, p2).run }
 # Notes:
 #
 # * Entities:
@@ -214,6 +212,7 @@ game1.run
 # * TODO:
 #   [X] Make possible to choose from range 1-9 instead of row and col nums.
 #   [?] Board.set_column (Game.ask player, ...) or Player.make_move?
-#   [?] Setup board interactivelly?
 #   [?] Set inner class methods to be private?
-#   [?] Prompt for another game in loop?
+#   [ ] Prompt for another game in loop?
+#   [?] Setup board interactivelly?
+#   [ ] Exit gracefully when interrupted.
