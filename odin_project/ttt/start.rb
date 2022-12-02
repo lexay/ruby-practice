@@ -16,7 +16,7 @@ TicTacToe::Game.start
 # Notes:
 #
 # * Entities:
-#   Game, Board, Player, Messages?
+#   Game, Game::Round, Board, Player, Message.
 #
 # * Game:
 #   Has Rounds.
@@ -38,7 +38,7 @@ TicTacToe::Game.start
 # * Message
 #   Has messages.
 #
-# * TODO:
+# TODO:
 #   [X] Make possible to choose from range 1-9 instead of row and col nums.
 #   [X] Prompt for another round in loop.
 #   [X] Setup board interactivelly.
@@ -48,4 +48,3 @@ TicTacToe::Game.start
 #   [?] New folder for Game and Game::Round in 'lib' folder asto show they are
 #   kinda in one nested namespace? or 'game_round.rb'?
 #   [?] Implement client and server?
-#
