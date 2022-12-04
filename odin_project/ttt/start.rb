@@ -47,4 +47,5 @@ TicTacToe::Game.start
 #   [?] Board.set_column (Game.ask player, ...) or Player.make_move?
 #   [?] New folder for Game and Game::Round in 'lib' folder asto show they are
 #   kinda in one nested namespace? or 'game_round.rb'?
+#   [?] Implement AI?
 #   [?] Implement client and server?

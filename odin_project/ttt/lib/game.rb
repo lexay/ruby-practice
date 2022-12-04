@@ -30,13 +30,11 @@ module TicTacToe
     def roll
       Game.show(Message.welcome)
       Game.show('Choose your destiny!')
-      Game.show('Rows/columns: ', chomp: true)
-      grid = gets.strip.scan(/\d/).first(2)
       p1 = Player.new
       p2 = Player.new
       players = [p1, p2]
       set(players)
-      run_rounds(players, grid)
+      run_rounds(players)
     end
 
     def set(players)
@@ -51,9 +49,9 @@ module TicTacToe
       end
     end
 
-    def run_rounds(players, grid)
+    def run_rounds(players)
       loop do
-        board = Board.new(*grid)
+        board = Board.new
         Game.show('Positions:')
         Game.show(board.positions)
         Round.new(board, *players).run

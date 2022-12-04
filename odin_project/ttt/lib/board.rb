@@ -5,8 +5,7 @@ module TicTacToe
     def initialize(rows = 3, columns = 3)
       @table = Array.new(rows) { Array.new(columns) {  '.' } }
       @positions = Array.new(rows * columns) { |i| i + 1 }.each_slice(columns)
-      @table.extend Helper
-      @positions.extend Helper
+      self.extend BoardHelper
     end
 
     def set(row, column, value)
