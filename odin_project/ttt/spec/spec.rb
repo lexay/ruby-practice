@@ -12,13 +12,13 @@ p1 = TicTacToe::Player.new
 p2 = TicTacToe::Player.new
 round = TicTacToe::Game::Round.new(board, p1, p2)
 
-RSpec.describe 'Player can set their name' do
-  it "Player's name is set to instance count if no name is chosen" do
+RSpec.describe 'Player can set their name to' do
+  it 'instance count if no name is chosen' do
     expect(p1.name).to eq(1)
     expect(p2.name).to eq(2)
   end
 
-  it "Player's name can be set to a desired name" do
+  it 'desired name' do
     p1.name = 'John'
     expect(p1.name).to eq('John')
   end
@@ -27,22 +27,22 @@ end
 RSpec.describe 'Validates position entered by Player' do
   board.set(0, 0, 'X')
 
-  it "position is valid if Player's input is between 1-9" do
+  it "valid if Player's input is between 1-9" do
     position = p1.make_move(board.table, 2)
     expect(!!round.instance_eval { not_valid?(position) }).to eq(false)
   end
 
-  it "position is NOT valid if Player's input is out of 1-9 range" do
+  it "NOT valid if Player's input is out of 1-9 range" do
     position = p1.make_move(board.table, 100)
     expect(!!round.instance_eval { not_valid?(position) }).to eq(true)
   end
 
-  it "position is NOT valid if Player's input is unexpected" do
+  it "NOT valid if Player's input is unexpected" do
     position = p1.make_move(board.table, 'one')
     expect(!!round.instance_eval { not_valid?(position) }).to eq(true)
   end
 
-  it 'position is NOT valid if position is already taken' do
+  it 'NOT valid if position is already taken' do
     position = p1.make_move(board.table, 1)
     expect(!!round.instance_eval { not_valid?(position) }).to eq(true)
   end
@@ -61,6 +61,21 @@ RSpec.describe 'Player wins' do
 
   it '3st row is crossed' do
     board.table.replace [%w[. . .], %w[. . .], %w[X X X]]
+    expect(round.instance_eval { check_combinations }).to eq('win')
+  end
+
+  it '1st column is crossed' do
+    board.table.replace [%w[X . .], %w[X . .], %w[X . .]]
+    expect(round.instance_eval { check_combinations }).to eq('win')
+  end
+
+  it '2nd column is crossed' do
+    board.table.replace [%w[. X .], %w[. X .], %w[. X .]]
+    expect(round.instance_eval { check_combinations }).to eq('win')
+  end
+
+  it '3rd column is crossed' do
+    board.table.replace [%w[. . X], %w[. . X], %w[. . X]]
     expect(round.instance_eval { check_combinations }).to eq('win')
   end
 
