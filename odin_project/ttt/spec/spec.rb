@@ -49,27 +49,27 @@ RSpec.describe 'Validates position entered by Player' do
 end
 
 RSpec.describe 'Player wins' do
-  it 'win if 1st row is won' do
+  it 'win if 1st row is crossed' do
     board.table.replace [%w[X X X], %w[. . .], %w[. . .]]
     expect(round.instance_eval { check_combinations }).to eq('win')
   end
 
-  it 'win if 2st row is won' do
+  it 'win if 2st row is crossed' do
     board.table.replace [%w[. . .], %w[X X X], %w[. . .]]
     expect(round.instance_eval { check_combinations }).to eq('win')
   end
 
-  it 'win if 3st row is won' do
+  it 'win if 3st row is crossed' do
     board.table.replace [%w[. . .], %w[. . .], %w[X X X]]
     expect(round.instance_eval { check_combinations }).to eq('win')
   end
 
-  it 'win if left diagonal is won' do
+  it 'win if left diagonal is crossed' do
     board.table.replace [%w[X . .], %w[. X .], %w[. . X]]
     expect(round.instance_eval { check_combinations }).to eq('win')
   end
 
-  it 'win if right diagonal is won' do
+  it 'win if right diagonal is crossed' do
     board.table.replace [%w[. . X], %w[. X .], %w[X . .]]
     expect(round.instance_eval { check_combinations }).to eq('win')
   end
