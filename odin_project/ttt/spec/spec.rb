@@ -12,7 +12,7 @@ p1 = TicTacToe::Player.new
 p2 = TicTacToe::Player.new
 round = TicTacToe::Game::Round.new(board, p1, p2)
 
-RSpec.describe 'Player can set their name to' do
+RSpec.describe 'Player can set their name' do
   it 'instance count if no name is chosen' do
     expect(p1.name).to eq(1)
     expect(p2.name).to eq(2)
@@ -54,12 +54,12 @@ RSpec.describe 'Player wins' do
     expect(round.instance_eval { check_combinations }).to eq('win')
   end
 
-  it '2st row is crossed' do
+  it '2nd row is crossed' do
     board.table.replace [%w[. . .], %w[X X X], %w[. . .]]
     expect(round.instance_eval { check_combinations }).to eq('win')
   end
 
-  it '3st row is crossed' do
+  it '3rd row is crossed' do
     board.table.replace [%w[. . .], %w[. . .], %w[X X X]]
     expect(round.instance_eval { check_combinations }).to eq('win')
   end
