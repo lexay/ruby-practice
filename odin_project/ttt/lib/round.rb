@@ -1,6 +1,8 @@
 module TicTacToe
   class Game
     class Round
+      attr_reader :board
+
       def initialize(board, player1, player2)
         @board = board
         @player1 = player1
@@ -22,7 +24,7 @@ module TicTacToe
           players.each do |player|
             Game.show("Player: #{player.name}, your turn!")
             prompt(player)
-            Game.show(@board.table)
+            Game.show(board.table)
             case check_combinations
             when 'win'
               return Game.show("Player: #{player.name} wins!")
@@ -34,20 +36,20 @@ module TicTacToe
       end
 
       def prompt(player)
-        loop do
-          position = Game.ask(player, 'Enter position number(1-9): ', :make_move, @board.table)
-          if position.nil?
-            Game.show 'Invalid input!'; redo
-          elsif !@board.empty?(*position)
-            Game.show("Player: #{player.name}, position is occupied! Choose another one!"); redo
-          else
-            @board.set(*position, player.sign); break
-          end
+        position = Game.ask(player, 'Enter position number(1-9): ', :make_move, board.table) while not_valid?(position)
+        board.set(*position, player.sign)
+      end
+
+      def not_valid?(position)
+        if position.nil?
+          Game.show 'Invalid input!'
+        elsif !board.empty?(*position)
+          Game.show('Position is occupied! Choose another one!')
         end
       end
 
       def check_combinations
-        table = @board.table
+        table = board.table
         horizontal = table
         vertical = table.transpose
         diagonals = [table, table.reverse].map { |t| t.map.with_index { |row, i| row[i] } }
