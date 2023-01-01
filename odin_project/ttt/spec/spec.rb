@@ -49,34 +49,34 @@ RSpec.describe 'Validates position entered by Player' do
 end
 
 RSpec.describe 'Player wins' do
-  it 'win if 1st row is crossed' do
+  it '1st row is crossed' do
     board.table.replace [%w[X X X], %w[. . .], %w[. . .]]
     expect(round.instance_eval { check_combinations }).to eq('win')
   end
 
-  it 'win if 2st row is crossed' do
+  it '2st row is crossed' do
     board.table.replace [%w[. . .], %w[X X X], %w[. . .]]
     expect(round.instance_eval { check_combinations }).to eq('win')
   end
 
-  it 'win if 3st row is crossed' do
+  it '3st row is crossed' do
     board.table.replace [%w[. . .], %w[. . .], %w[X X X]]
     expect(round.instance_eval { check_combinations }).to eq('win')
   end
 
-  it 'win if left diagonal is crossed' do
+  it 'left diagonal is crossed' do
     board.table.replace [%w[X . .], %w[. X .], %w[. . X]]
     expect(round.instance_eval { check_combinations }).to eq('win')
   end
 
-  it 'win if right diagonal is crossed' do
+  it 'right diagonal is crossed' do
     board.table.replace [%w[. . X], %w[. X .], %w[X . .]]
     expect(round.instance_eval { check_combinations }).to eq('win')
   end
 end
 
 RSpec.describe 'Players are drawn' do
-  it 'draw if no free positions left' do
+  it 'no free positions left' do
     board.table.replace [%w[X O X], %w[O X O], %w[O X O]]
     expect(round.instance_eval { check_combinations }).to eq('draw')
   end
