@@ -36,15 +36,18 @@ module TicTacToe
       end
 
       def prompt(player)
-        position = Game.ask(player, 'Enter position number(1-9): ', :make_move, board.table) while not_valid?(position)
-        board.set(*position, player.sign)
+        loop do
+          position = Game.ask(player, 'Enter position number(1-9): ', :make_move, board.table)
+          invalid = validate(position)
+          invalid ? Game.show(invalid) : board.set(*position, player.sign) && return
+        end
       end
 
-      def not_valid?(position)
+      def validate(position)
         if position.nil?
-          Game.show 'Invalid input!'
+          'Invalid input!'
         elsif !board.empty?(*position)
-          Game.show('Position is occupied! Choose another one!')
+          'Position is occupied! Choose another one!'
         end
       end
 

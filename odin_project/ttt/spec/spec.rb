@@ -29,22 +29,22 @@ RSpec.describe 'Validates position entered by Player' do
 
   it "valid if Player's input is between 1-9" do
     position = p1.make_move(board.table, 2)
-    expect(!!round.instance_eval { not_valid?(position) }).to eq(false)
+    expect(round.instance_eval { validate(position) }).to eq(nil)
   end
 
   it "NOT valid if Player's input is out of 1-9 range" do
     position = p1.make_move(board.table, 100)
-    expect(!!round.instance_eval { not_valid?(position) }).to eq(true)
+    expect(round.instance_eval { validate(position) }).to eq('Invalid input!')
   end
 
   it "NOT valid if Player's input is unexpected" do
     position = p1.make_move(board.table, 'one')
-    expect(!!round.instance_eval { not_valid?(position) }).to eq(true)
+    expect(round.instance_eval { validate(position) }).to eq('Invalid input!')
   end
 
   it 'NOT valid if position is already taken' do
     position = p1.make_move(board.table, 1)
-    expect(!!round.instance_eval { not_valid?(position) }).to eq(true)
+    expect(round.instance_eval { validate(position) }).to eq('Position is occupied! Choose another one!')
   end
 end
 
