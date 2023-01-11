@@ -39,14 +39,14 @@ module TicTacToe
         position = Game.ask(player, 'Enter position number(1-9): ', :make_move, board.table)
         validate(position)
         board.set(*position, player.sign)
-      rescue StandardError => e
+      rescue InputError, PositionNotEmptyError => e
         Game.show(e.message)
         retry
       end
 
       def validate(position)
-        raise StandardError, 'Invalid input!' if position.nil?
-        raise StandardError, 'Position is occupied! Choose another one!' unless board.empty?(*position)
+        raise InputError if position.nil?
+        raise PositionNotEmptyError unless board.empty?(*position)
       end
 
       def check_combinations

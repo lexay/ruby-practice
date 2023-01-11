@@ -6,6 +6,7 @@ require_relative '../lib/board.rb'
 require_relative '../helpers/board_helper.rb'
 require_relative '../lib/player.rb'
 require_relative '../lib/game.rb'
+require_relative '../lib/errors.rb'
 
 board = TicTacToe::Board.new
 p1 = TicTacToe::Player.new
@@ -34,17 +35,17 @@ RSpec.describe 'Validates position entered by Player' do
 
   it "NOT valid if Player's input is out of 1-9 range" do
     position = p1.make_move(board.table, 100)
-    expect{ round.instance_eval { validate(position) } }.to raise_error(StandardError)
+    expect{ round.instance_eval { validate(position) } }.to raise_error(TicTacToe::InputError)
   end
 
   it "NOT valid if Player's input is unexpected" do
     position = p1.make_move(board.table, 'one')
-    expect{ round.instance_eval { validate(position) } }.to raise_error(StandardError)
+    expect{ round.instance_eval { validate(position) } }.to raise_error(TicTacToe::InputError)
   end
 
   it 'NOT valid if position is already taken' do
     position = p1.make_move(board.table, 1)
-    expect{ round.instance_eval { validate(position) } }.to raise_error(StandardError)
+    expect{ round.instance_eval { validate(position) } }.to raise_error(TicTacToe::PositionNotEmptyError)
   end
 end
 
