@@ -12,7 +12,7 @@ module TicTacToe
       end
       return if chomp
 
-      2.times { puts }
+      puts "\n\n"
     end
 
     def self.ask(player, *args)
