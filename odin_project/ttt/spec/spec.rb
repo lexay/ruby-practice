@@ -49,7 +49,7 @@ RSpec.describe 'Validates position entered by Player' do
   end
 end
 
-RSpec.describe 'Player wins' do
+RSpec.describe 'Win' do
   it '1st row is crossed' do
     board.table.replace [%w[X X X], %w[. . .], %w[. . .]]
     expect(round.instance_eval { check_combinations }).to eq('win')
@@ -91,7 +91,7 @@ RSpec.describe 'Player wins' do
   end
 end
 
-RSpec.describe 'Players are drawn' do
+RSpec.describe 'Draw' do
   it 'no free positions left' do
     board.table.replace [%w[X O X], %w[O X O], %w[O X O]]
     expect(round.instance_eval { check_combinations }).to eq('draw')
