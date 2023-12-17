@@ -16,10 +16,22 @@ module Mastermind
       end
     end
 
+    attr_reader :color
+
     def initialize(color)
       @color = color
       self.class.count -= 1
     end
+
+    def ==(other)
+      color == other.color
+    end
+
+    def hash
+      color.hash
+    end
+
+    alias eql? ==
   end
 
   class KeyPeg < Peg

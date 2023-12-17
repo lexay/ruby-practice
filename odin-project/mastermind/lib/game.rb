@@ -17,6 +17,14 @@ module Mastermind
       cm = CodeMaker.new
       cb = CodeBreaker.new
 
+      begin
+        secret = generate_secret
+        cm.secret = secret
+      rescue BadSecretError => e
+        puts e.message
+        retry
+      end
+
       1.upto(10) do |round|
       end
     end

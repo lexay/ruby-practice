@@ -24,7 +24,7 @@ module Mastermind
     attr_reader :secret
 
     def secret=(new_secret)
-      raise StandardError, 'Unacceptable combination!' if new_secret.uniq.size = 1
+      raise BadSecretError if new_secret.uniq.size == 1
 
       @secret = new_secret
     end
