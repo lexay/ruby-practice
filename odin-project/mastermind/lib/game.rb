@@ -20,5 +20,12 @@ module Mastermind
       1.upto(10) do |round|
       end
     end
+
+    def generate_secret
+      pegs = CodePeg.create_each(1)
+      secret = []
+      4.times { secret.push(pegs.sample) }
+      secret
+    end
   end
 end
