@@ -3,7 +3,7 @@ module Mastermind
     @count = 0
 
     class << Game
-      attr_accessor :round
+      attr_accessor :count
     end
 
     attr_reader :code_pegs, :key_pegs
