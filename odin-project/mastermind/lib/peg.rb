@@ -5,7 +5,7 @@ module Mastermind
     class << self
       attr_accessor :count
 
-      def create(num, colors = [])
+      def create_each(num, colors = [])
         return if count.zero?
 
         pegs = []
@@ -24,14 +24,14 @@ module Mastermind
 
   class KeyPeg < Peg
     @count = 20
-    def self.create(num)
+    def self.create_each(num)
       super(num, %w[red white])
     end
   end
 
   class CodePeg < Peg
     @count = 60
-    def self.create(num)
+    def self.create_each(num)
       super(num, %w[red blue green white black yellow])
     end
   end

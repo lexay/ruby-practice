@@ -9,8 +9,8 @@ module Mastermind
     attr_reader :code_pegs, :key_pegs
 
     def initialize
-      code_pegs = CodePeg.create(10)
-      key_pegs = KeyPeg.create(10)
+      code_pegs = CodePeg.create_each(10)
+      key_pegs = KeyPeg.create_each(10)
 
       Game.count += 1
 
