@@ -45,7 +45,7 @@ module Mastermind
       loop do
         c = read_char
 
-        redo unless ["\e[A", "\e[B"].include?(c)
+        redo unless ["\e[A", "\e[B", "\r"].include?(c)
 
         console.clear_screen
         puts hint
