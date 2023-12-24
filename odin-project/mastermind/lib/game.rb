@@ -30,9 +30,9 @@ module Mastermind
     def create_players
       puts hint
       puts p1_menu
-      players = choose_players
+      players_count = choose_players
 
-      if players == 2
+      if players_count == 2
         [HumanPlayer.new, HumanPlayer.new]
       else
         [HumanPlayer.new, CpuPlayer.new]
