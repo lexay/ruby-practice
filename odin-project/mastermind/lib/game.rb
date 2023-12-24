@@ -89,19 +89,19 @@ module Mastermind
 
     def p1_menu
       <<~MESSAGE
-        ==========
-        1 Player V
-        2 Players
-        ==========
+        =============
+        [ 1 Player ]
+          2 Players
+        =============
       MESSAGE
     end
 
     def p2_menu
       <<~MESSAGE
-        ==========
-        1 Player
-        2 Players V
-        ==========
+        =============
+          1 Player
+        [ 2 Players ]
+        =============
       MESSAGE
     end
 
