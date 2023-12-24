@@ -6,7 +6,7 @@ module Mastermind
       attr_accessor :count
     end
 
-    attr_reader :name
+    attr_reader :name, :secret
     attr_accessor :points
 
     def name=(new_name)
@@ -18,10 +18,8 @@ module Mastermind
       @name = Player.count
       @points = 0
     end
-  end
 
-  class CodeMaker < Player
-    attr_reader :secret
+    private
 
     def secret=(new_secret)
       raise BadSecretError if new_secret.uniq.size == 1
@@ -30,8 +28,45 @@ module Mastermind
     end
   end
 
-  class CodeBreaker < Player
+  class HumanPlayer < Player
+    def generate_secret
+      combination = []
+      4.times do |i|
+        table = <<~COLORS
+
+          ===========
+          1. Red
+          2. Blue
+          3. Green
+          4. Black
+          5. White
+          6. Yellow
+          ===========
+
+          Choose #{i + 1} color (1-6):
+        COLORS
+        print(table.strip)
+        index = gets.to_i
+        combination.push CodePeg.new(%w[red blue green black white yellow].at(index))
+      end
+      self.secret = combination
+    rescue BadSecretError => e
+      puts e.message
+      retry
+    end
+  end
+
+  class CpuPlayer < Player
+    def generate_secret
+      pegs = CodePeg.create_each(1)
+      combination = []
+      4.times { combination.push(pegs.sample) }
+      self.secret = combination
+    rescue BadSecretError => e
+      puts e.message
+      retry
+    end
+
+    def give_clue(combination); end
   end
 end
-
-# Generate @secret in-place if no input from CodeMaker.
