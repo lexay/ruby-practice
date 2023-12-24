@@ -48,13 +48,14 @@ module Mastermind
         redo unless ["\e[A", "\e[B", "\r"].include?(c)
 
         console.clear_screen
-        puts hint
 
         case c
         when "\e[A"
+          puts hint
           puts p1_menu
           players_count -= 1 if players_count == 2
         when "\e[B"
+          puts hint
           puts p2_menu
           players_count += 1 if players_count == 1
         when "\r"
