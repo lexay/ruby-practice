@@ -10,7 +10,7 @@ module Mastermind
 
         pegs = []
         colors.each do |c|
-          pegs.concat(Array.new(num) { Peg.new(c) })
+          pegs.concat(Array.new(num) { new(c) })
         end
         pegs
       end
@@ -32,6 +32,10 @@ module Mastermind
     end
 
     alias eql? ==
+
+    def to_s
+      color.capitalize.slice(0)
+    end
   end
 
   class KeyPeg < Peg
