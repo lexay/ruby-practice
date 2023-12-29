@@ -29,25 +29,13 @@ module Mastermind
   end
 
   class HumanPlayer < Player
+    include Console
+
     def generate_secret
-      combination = []
-      4.times do |i|
-        table = <<~COLORS
-
-          ===========
-          1. Red
-          2. Blue
-          3. Green
-          4. Black
-          5. White
-          6. Yellow
-          ===========
-
-          Choose #{i + 1} color (1-6):
-        COLORS
-        print(table.strip)
-        index = gets.to_i
-        combination.push CodePeg.new(%w[red blue green black white yellow].at(index))
+      combination = %w[. . . .]
+      colors = CodePeg.create_each(1)
+      combination.map! do |_e|
+        select_from_menu(colors)
       end
       self.secret = combination
     rescue BadSecretError => e
