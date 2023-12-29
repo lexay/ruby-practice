@@ -32,20 +32,16 @@ module Mastermind
     def generate_secret
       combination = []
       4.times do |i|
-        table = <<~COLORS
-
-          ===========
+        colors = <<~MESSAGE
           1. Red
           2. Blue
           3. Green
           4. Black
           5. White
           6. Yellow
-          ===========
-
-          Choose #{i + 1} color (1-6):
-        COLORS
-        print(table.strip)
+        MESSAGE
+        puts colors
+        print "Choose #{i + 1} color (1-6): "
         index = gets.to_i
         combination.push CodePeg.new(%w[red blue green black white yellow].at(index))
       end
