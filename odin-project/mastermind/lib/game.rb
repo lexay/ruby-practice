@@ -13,6 +13,7 @@ module Mastermind
 
     def run
       players = create_players
+      cm, cb = assign_roles(players)
     end
 
     def create_players
@@ -30,6 +31,19 @@ module Mastermind
       else
         [HumanPlayer.new, CpuPlayer.new]
       end
+    end
+
+    def assign_roles(players)
+      roles_menu = <<~MESSAGE
+        1. Code Maker
+        2. Code Breaker
+      MESSAGE
+      puts roles_menu
+      print 'Choose your role: '
+      role = gets.to_i
+      puts
+
+      role == 1 ? players : players.reverse
     end
   end
 end
